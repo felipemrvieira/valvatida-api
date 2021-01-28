@@ -1,4 +1,4 @@
-class NeighborhoodsController < ApplicationController
+class Api::V1::NeighborhoodsController < ApplicationController
   before_action :set_neighborhood, only: [:show, :update, :destroy]
 
   # GET /neighborhoods
