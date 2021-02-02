@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "/countries", type: :request do
+RSpec.describe "api/v1/countries", type: :request do
   
   let(:valid_attributes) {
     {name: "Brasil"}
@@ -15,18 +15,37 @@ RSpec.describe "/countries", type: :request do
   }
 
   describe "GET /index" do
-    it "renders a successful response" do
+    before do
       Country.create! valid_attributes
-      get countries_url, headers: valid_headers, as: :json
+    end
+
+    it "renders a successful response" do
+      get "/api/v1/countries", headers: valid_headers, as: :json
       expect(response).to be_successful
+    end
+
+    it "JSON body response contains expected country attributes" do
+      get "/api/v1/countries", headers: valid_headers, as: :json
+      expect(response.body).to include_json([
+        name: "Brasil"
+      ])
     end
   end
 
   describe "GET /show" do
     it "renders a successful response" do
       country = Country.create! valid_attributes
-      get country_url(country), as: :json
+      get "/api/v1/countries/#{country.id}", as: :json
       expect(response).to be_successful
+    end
+
+    it "JSON body response contains expected country attributes" do
+      country = Country.create! valid_attributes
+      get "/api/v1/countries/#{country.id}", as: :json
+      expect(response.body).to include_json(
+        id: country.id,
+        name: country.name
+      )
     end
   end
 
@@ -34,13 +53,13 @@ RSpec.describe "/countries", type: :request do
     context "with valid parameters" do
       it "creates a new Country" do
         expect {
-          post countries_url,
+          post "/api/v1/countries",
                params: { country: valid_attributes }, headers: valid_headers, as: :json
         }.to change(Country, :count).by(1)
       end
 
       it "renders a JSON response with the new country" do
-        post countries_url,
+        post "/api/v1/countries",
              params: { country: valid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:created)
         expect(response.content_type).to match(a_string_including("application/json"))
@@ -50,13 +69,13 @@ RSpec.describe "/countries", type: :request do
     context "with invalid parameters" do
       it "does not create a new Country" do
         expect {
-          post countries_url,
+          post "/api/v1/countries",
                params: { country: invalid_attributes }, as: :json
         }.to change(Country, :count).by(0)
       end
 
       it "renders a JSON response with errors for the new country" do
-        post countries_url,
+        post "/api/v1/countries",
              params: { country: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq("application/json")
@@ -72,15 +91,18 @@ RSpec.describe "/countries", type: :request do
 
       it "updates the requested country" do
         country = Country.create! valid_attributes
-        patch country_url(country),
+        patch "/api/v1/countries/#{country.id}",
               params: { country: new_attributes }, headers: valid_headers, as: :json
         country.reload
-        skip("Add assertions for updated state")
+        expect(response.body).to include_json(
+          id: country.id,
+          name: 'Portugal'
+        )
       end
 
       it "renders a JSON response with the country" do
         country = Country.create! valid_attributes
-        patch country_url(country),
+        patch "/api/v1/countries/#{country.id}",
               params: { country: new_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including("application/json"))
@@ -90,7 +112,7 @@ RSpec.describe "/countries", type: :request do
     context "with invalid parameters" do
       it "renders a JSON response with errors for the country" do
         country = Country.create! valid_attributes
-        patch country_url(country),
+        patch "/api/v1/countries/#{country.id}",
               params: { country: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq("application/json")
@@ -102,7 +124,7 @@ RSpec.describe "/countries", type: :request do
     it "destroys the requested country" do
       country = Country.create! valid_attributes
       expect {
-        delete country_url(country), headers: valid_headers, as: :json
+        delete "/api/v1/countries/#{country.id}", headers: valid_headers, as: :json
       }.to change(Country, :count).by(-1)
     end
   end
