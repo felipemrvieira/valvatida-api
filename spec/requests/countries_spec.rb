@@ -60,7 +60,7 @@ RSpec.describe "api/v1/countries", type: :request do
 
       it "renders a JSON response with the new country" do
         post "/api/v1/countries",
-             params: { country: valid_attributes }, headers: valid_headers, as: :json
+            params: { country: valid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:created)
         expect(response.content_type).to match(a_string_including("application/json"))
       end
