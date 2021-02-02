@@ -6,4 +6,8 @@ class Student < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   include DeviseTokenAuth::Concerns::User
+
+  has_many :enrollments, dependent: :nullify
+  has_many :courses, through: :enrollments
+  belongs_to :address
 end
