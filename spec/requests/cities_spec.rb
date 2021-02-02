@@ -26,7 +26,7 @@ RSpec.describe "/cities", type: :request do
       expect(response).to be_successful
     end
 
-    it "JSON body response contains expected country attributes" do
+    it "JSON body response contains expected city attributes" do
       expect(response.body).to include_json([
         name: city.name
       ])

@@ -18,7 +18,7 @@ class Api::V1::NeighborhoodsController < ApplicationController
     @neighborhood = Neighborhood.new(neighborhood_params)
 
     if @neighborhood.save
-      render json: @neighborhood, status: :created, location: @neighborhood
+      render json: @neighborhood, status: :created, location: api_v1_neighborhood_path(@neighborhood)
     else
       render json: @neighborhood.errors, status: :unprocessable_entity
     end

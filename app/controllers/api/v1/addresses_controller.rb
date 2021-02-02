@@ -18,7 +18,7 @@ class Api::V1::AddressesController < ApplicationController
     @address = Address.new(address_params)
 
     if @address.save
-      render json: @address, status: :created, location: @address
+      render json: @address, status: :created, location: api_v1_address_path(@address)
     else
       render json: @address.errors, status: :unprocessable_entity
     end
@@ -46,6 +46,6 @@ class Api::V1::AddressesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def address_params
-      params.require(:address).permit(:public_place, :number, :ref, :lat, :long, :neighborhood_id)
+      params.require(:address).permit(:street, :number, :ref, :lat, :long, :neighborhood_id)
     end
 end

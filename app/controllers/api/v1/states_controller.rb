@@ -18,7 +18,7 @@ class Api::V1::StatesController < ApplicationController
     @state = State.new(state_params)
 
     if @state.save
-      render json: @state, status: :created#, location: @state
+      render json: @state, status: :created, location: api_v1_state_path(@state)
     else
       render json: @state.errors, status: :unprocessable_entity
     end

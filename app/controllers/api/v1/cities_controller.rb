@@ -18,7 +18,7 @@ class Api::V1::CitiesController < ApplicationController
     @city = City.new(city_params)
 
     if @city.save
-      render json: @city, status: :created#, location: @city
+      render json: @city, status: :created, location: api_v1_city_path(@city)
     else
       render json: @city.errors, status: :unprocessable_entity
     end

@@ -18,7 +18,7 @@ class Api::V1::CountriesController < ApplicationController
     @country = Country.new(country_params)
 
     if @country.save
-      render json: @country, status: :created#, location: @country
+      render json: @country, status: :created, location: api_v1_country_path(@country)
     else
       render json: @country.errors, status: :unprocessable_entity
     end
