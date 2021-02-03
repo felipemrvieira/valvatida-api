@@ -10,4 +10,5 @@ class Student < ActiveRecord::Base
   has_many :enrollments, dependent: :nullify
   has_many :courses, through: :enrollments
   belongs_to :address
+  validates :name, presence: true
 end

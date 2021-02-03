@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_02_195411) do
+ActiveRecord::Schema.define(version: 2021_02_03_112659) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,8 @@ ActiveRecord::Schema.define(version: 2021_02_02_195411) do
     t.bigint "school_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "course_group_id"
+    t.index ["course_group_id"], name: "index_courses_on_course_group_id"
     t.index ["school_id"], name: "index_courses_on_school_id"
   end
 
@@ -78,7 +80,9 @@ ActiveRecord::Schema.define(version: 2021_02_02_195411) do
     t.bigint "subject_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "teacher_id"
     t.index ["subject_id"], name: "index_questions_on_subject_id"
+    t.index ["teacher_id"], name: "index_questions_on_teacher_id"
   end
 
   create_table "schools", force: :cascade do |t|
@@ -116,6 +120,8 @@ ActiveRecord::Schema.define(version: 2021_02_02_195411) do
     t.json "tokens"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "address_id"
+    t.index ["address_id"], name: "index_students_on_address_id"
     t.index ["confirmation_token"], name: "index_students_on_confirmation_token", unique: true
     t.index ["email"], name: "index_students_on_email", unique: true
     t.index ["reset_password_token"], name: "index_students_on_reset_password_token", unique: true
@@ -149,20 +155,26 @@ ActiveRecord::Schema.define(version: 2021_02_02_195411) do
     t.json "tokens"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "school_id"
     t.index ["confirmation_token"], name: "index_teachers_on_confirmation_token", unique: true
     t.index ["email"], name: "index_teachers_on_email", unique: true
     t.index ["reset_password_token"], name: "index_teachers_on_reset_password_token", unique: true
+    t.index ["school_id"], name: "index_teachers_on_school_id"
     t.index ["uid", "provider"], name: "index_teachers_on_uid_and_provider", unique: true
   end
 
   add_foreign_key "addresses", "neighborhoods"
   add_foreign_key "cities", "states"
+  add_foreign_key "courses", "course_groups"
   add_foreign_key "courses", "schools"
   add_foreign_key "enrollments", "courses"
   add_foreign_key "enrollments", "students"
   add_foreign_key "neighborhoods", "cities"
   add_foreign_key "questions", "subjects"
+  add_foreign_key "questions", "teachers"
   add_foreign_key "schools", "addresses"
   add_foreign_key "states", "countries"
+  add_foreign_key "students", "addresses"
   add_foreign_key "subjects", "courses"
+  add_foreign_key "teachers", "schools"
 end

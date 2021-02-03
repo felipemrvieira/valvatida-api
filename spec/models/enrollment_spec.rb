@@ -1,5 +1,6 @@
-require 'rails_helper'
+require 'rails_helper' 
 
-RSpec.describe Enrollment, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe Enrollment do
+  it { is_expected.to belong_to(:course) }
+  it { is_expected.to belong_to(:student) }
 end
