@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :school do
-    name { "MyString" }
-    address { nil }
+    name { FFaker::Education.school_name }
+    address
   end
 end

@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :course do
-    name { "MyString" }
-    school { nil }
+    name { FFaker::Education.major }
+    school
+    course_group
   end
 end
