@@ -18,7 +18,7 @@ class Api::V1::SchoolsController < ApplicationController
     @school = School.new(school_params)
 
     if @school.save
-      render json: @school, status: :created, location: @school
+      render json: @school, status: :created, location: api_v1_school_path(@school)
     else
       render json: @school.errors, status: :unprocessable_entity
     end

@@ -1,4 +1,4 @@
-class CourseGroupsController < ApplicationController
+class Api::V1::CourseGroupsController < ApplicationController
   before_action :set_course_group, only: [:show, :update, :destroy]
 
   # GET /course_groups
@@ -18,7 +18,7 @@ class CourseGroupsController < ApplicationController
     @course_group = CourseGroup.new(course_group_params)
 
     if @course_group.save
-      render json: @course_group, status: :created, location: @course_group
+      render json: @course_group, status: :created, location: api_v1_course_group_path(@course_group)
     else
       render json: @course_group.errors, status: :unprocessable_entity
     end

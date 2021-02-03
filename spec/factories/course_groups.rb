@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :course_group do
-    title { Faker::Education.major }
+    title { FFaker::Education.major }
   end
 end

@@ -1,4 +1,4 @@
-class SubjectsController < ApplicationController
+class Api::V1::SubjectsController < ApplicationController
   before_action :set_subject, only: [:show, :update, :destroy]
 
   # GET /subjects
@@ -18,7 +18,7 @@ class SubjectsController < ApplicationController
     @subject = Subject.new(subject_params)
 
     if @subject.save
-      render json: @subject, status: :created, location: @subject
+      render json: @subject, status: :created, location: api_v1_subject_path(@subject)
     else
       render json: @subject.errors, status: :unprocessable_entity
     end

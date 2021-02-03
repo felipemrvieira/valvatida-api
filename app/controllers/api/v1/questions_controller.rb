@@ -1,4 +1,4 @@
-class QuestionsController < ApplicationController
+class Api::V1::QuestionsController < ApplicationController
   before_action :set_question, only: [:show, :update, :destroy]
 
   # GET /questions
@@ -18,7 +18,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
 
     if @question.save
-      render json: @question, status: :created, location: @question
+      render json: @question, status: :created, location: api_v1_question_path(@question)
     else
       render json: @question.errors, status: :unprocessable_entity
     end
@@ -46,6 +46,6 @@ class QuestionsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def question_params
-      params.require(:question).permit(:label, :command, :subject_id)
+      params.require(:question).permit(:label, :command, :subject_id, :teacher_id)
     end
 end

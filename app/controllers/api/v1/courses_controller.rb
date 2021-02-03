@@ -1,4 +1,4 @@
-class CoursesController < ApplicationController
+class Api::V1::CoursesController < ApplicationController
   before_action :set_course, only: [:show, :update, :destroy]
 
   # GET /courses
@@ -18,7 +18,7 @@ class CoursesController < ApplicationController
     @course = Course.new(course_params)
 
     if @course.save
-      render json: @course, status: :created, location: @course
+      render json: @course, status: :created, location: api_v1_course_path(@course)
     else
       render json: @course.errors, status: :unprocessable_entity
     end
@@ -46,6 +46,6 @@ class CoursesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def course_params
-      params.require(:course).permit(:name, :school_id)
+      params.require(:course).permit(:title, :school_id)
     end
 end

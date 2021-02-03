@@ -1,4 +1,4 @@
-class EnrollmentsController < ApplicationController
+class Api::V1::EnrollmentsController < ApplicationController
   before_action :set_enrollment, only: [:show, :update, :destroy]
 
   # GET /enrollments
@@ -18,7 +18,7 @@ class EnrollmentsController < ApplicationController
     @enrollment = Enrollment.new(enrollment_params)
 
     if @enrollment.save
-      render json: @enrollment, status: :created, location: @enrollment
+      render json: @enrollment, status: :created, location: api_v1_enrollment_path(@enrollment)
     else
       render json: @enrollment.errors, status: :unprocessable_entity
     end
