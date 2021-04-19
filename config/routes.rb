@@ -20,6 +20,15 @@ Rails.application.routes.draw do
         sessions:             'api/v1/teachers/sessions',
         # token_validations:  'devise_token_auth/token_validations'
       }
+
+      mount_devise_token_auth_for 'Admin', at: 'admin_auth', controllers: {
+        # confirmations:      'devise_token_auth/confirmations',
+        # passwords:          'devise_token_auth/passwords',
+        # omniauth_callbacks: 'devise_token_auth/omniauth_callbacks',
+        registrations:        'api/v1/admins/registrations',
+        sessions:             'api/v1/admins/sessions',
+        # token_validations:  'devise_token_auth/token_validations'
+      }
       
       resources :addresses
       resources :cities

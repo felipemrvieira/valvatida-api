@@ -17,9 +17,15 @@ RSpec.describe "/schools", type: :request do
   describe "GET /index" do
     
     let!(:school) { create :school }
+    let!(:admin) { create :admin }
+
+    before do
+      login_admin
+      @auth_params = get_auth_params_from_login_response_headers(response)
+    end
     
     before do
-      get '/api/v1/schools', headers: valid_headers, as: :json
+      get '/api/v1/schools', headers: @auth_params, as: :json
     end
 
     it "renders a successful response" do
@@ -35,18 +41,26 @@ RSpec.describe "/schools", type: :request do
 
   describe "POST /create" do
     context "with valid parameters" do
-
+      
+      let!(:admin) { create :admin }
       let!(:address) { create :address }
       let!(:school) { build :school, address_id: address.id }
       
+      before do
+        login_admin
+        @auth_params = get_auth_params_from_login_response_headers(response)
+      end
+
       it "creates a new School" do
+        # login_admin
+        # auth_params = get_auth_params_from_login_response_headers(response)
         expect {
-          post '/api/v1/schools', params: school.attributes, headers: valid_headers, as: :json
+          post '/api/v1/schools', params: school.attributes, headers: @auth_params, as: :json
         }.to change(School, :count).by(1)
       end
 
       it "renders a JSON response with the new School" do
-        post '/api/v1/schools', params: school.attributes, headers: valid_headers, as: :json
+        post '/api/v1/schools', params: school.attributes, headers: @auth_params, as: :json
 
         expect(response).to have_http_status(:created)
         expect(response.content_type).to match(a_string_including("application/json"))
@@ -54,19 +68,25 @@ RSpec.describe "/schools", type: :request do
     end
 
     context "with invalid parameters" do
+      let!(:admin) { create :admin }
       let!(:school) { build :school }
       # school needs address
+
+      before do
+        login_admin
+        @auth_params = get_auth_params_from_login_response_headers(response)
+      end
 
       it "does not create a new School" do
         expect {
           post '/api/v1/schools',
-               params: { school: school.attributes }, as: :json
+               params: { school: school.attributes }, headers: @auth_params, as: :json
         }.to change(School, :count).by(0)
       end
 
       it "renders a JSON response with errors for the new School" do
         post '/api/v1/schools',
-             params: { school: school.attributes }, headers: valid_headers, as: :json
+             params: { school: school.attributes }, headers: @auth_params, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq("application/json")
       end
@@ -75,6 +95,12 @@ RSpec.describe "/schools", type: :request do
 
   describe "PATCH /update" do
     let!(:school) { create :school }
+    let!(:admin) { create :admin }
+
+    before do
+      login_admin
+      @auth_params = get_auth_params_from_login_response_headers(response)
+    end
 
     context "with valid parameters" do
       let(:new_attributes) {
@@ -83,7 +109,7 @@ RSpec.describe "/schools", type: :request do
 
       before do
         patch "/api/v1/schools/#{school.id}",
-              params: { school: new_attributes }, headers: valid_headers, as: :json
+              params: { school: new_attributes }, headers: @auth_params, as: :json
       end
 
       it "updates the requested school" do
@@ -103,7 +129,7 @@ RSpec.describe "/schools", type: :request do
     context "with invalid parameters" do
       it "renders a JSON response with errors for the school" do
         patch "/api/v1/schools/#{school.id}",
-              params: { school: invalid_attributes }, headers: valid_headers, as: :json
+              params: { school: invalid_attributes }, headers: @auth_params, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq("application/json")
       end
@@ -112,11 +138,41 @@ RSpec.describe "/schools", type: :request do
 
   describe "DELETE /destroy" do
     let!(:school) { create :school }
+    let!(:admin) { create :admin }
+
+    before do
+      login_admin
+      @auth_params = get_auth_params_from_login_response_headers(response)
+    end
+
     
     it "destroys the requested school" do
       expect {
-        delete "/api/v1/schools/#{school.id}", headers: valid_headers, as: :json
+        delete "/api/v1/schools/#{school.id}", headers: @auth_params, as: :json
       }.to change(School, :count).by(-1)
+      puts response.body
     end
+  end
+
+  def login_admin
+    post api_v1_admin_session_path, params:  { email: admin.email, password: '123123' }.to_json, 
+    headers: { 'CONTENT_TYPE' => 'application/json', 'ACCEPT' => 'application/json' }
+  end
+
+  def get_auth_params_from_login_response_headers(response)
+    client = response.headers['client']
+    token = response.headers['access-token']
+    expiry = response.headers['expiry']
+    token_type = response.headers['token-type']
+    uid = response.headers['uid']
+
+    auth_params = {
+      'access-token' => token,
+      'client' => client,
+      'uid' => uid,
+      'expiry' => expiry,
+      'token-type' => token_type
+    }
+    auth_params
   end
 end
