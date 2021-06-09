@@ -1,6 +1,6 @@
 class Api::V1::SchoolsController < ApplicationController
   before_action :set_school, only: [:show, :update, :destroy]
-  before_action :authenticate_api_v1_admin!
+  # before_action :authenticate_api_v1_admin!
 
   # GET /schools
   def index
