@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       resources :addresses
       resources :cities
       resources :countries
+      resources :teachers
       resources :courses
       resources :course_groups
       resources :enrollments
