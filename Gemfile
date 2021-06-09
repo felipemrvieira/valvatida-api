@@ -18,8 +18,6 @@ gem 'puma', '~> 3.11'
 gem 'devise'
 gem 'devise_token_auth'
 
-gem 'apartment'
-
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
