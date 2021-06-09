@@ -4,13 +4,12 @@ class Api::V1::CountriesController < ApplicationController
   # GET /countries
   def index
     @countries = Country.all
-
     render json: @countries
   end
 
   # GET /countries/1
   def show
-    render json: @country
+    render json: @country, include: :states
   end
 
   # POST /countries

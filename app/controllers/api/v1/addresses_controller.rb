@@ -10,7 +10,7 @@ class Api::V1::AddressesController < ApplicationController
 
   # GET /addresses/1
   def show
-    render json: @address
+    render json: @address, methods: :extra
   end
 
   # POST /addresses

@@ -5,13 +5,12 @@ class Api::V1::SchoolsController < ApplicationController
   # GET /schools
   def index
     @schools = School.all
-
     render json: @schools
   end
 
   # GET /schools/1
   def show
-    render json: @school
+    render json: @school, include: :address
   end
 
   # POST /schools

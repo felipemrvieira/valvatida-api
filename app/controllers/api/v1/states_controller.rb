@@ -10,7 +10,7 @@ class Api::V1::StatesController < ApplicationController
 
   # GET /states/1
   def show
-    render json: @state
+    render json: @state, include: :cities
   end
 
   # POST /states

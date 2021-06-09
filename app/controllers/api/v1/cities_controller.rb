@@ -4,13 +4,12 @@ class Api::V1::CitiesController < ApplicationController
   # GET /cities
   def index
     @cities = City.all
-
     render json: @cities
   end
 
   # GET /cities/1
   def show
-    render json: @city
+    render json: @city, include: :neighborhoods
   end
 
   # POST /cities
