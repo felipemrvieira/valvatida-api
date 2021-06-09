@@ -1,3 +1,9 @@
+class SubdomainConstraint   
+  def self.matches?(request)     
+    request.subdomain.present? && request.subdomain != 'www'   
+  end 
+end 
+
 Rails.application.routes.draw do
   
   namespace :api do
@@ -30,16 +36,21 @@ Rails.application.routes.draw do
         # token_validations:  'devise_token_auth/token_validations'
       }
       
-      resources :addresses
-      resources :cities
+      constraints SubdomainConstraint do     
+        resources :teachers
+      end
       resources :countries
+      resources :states
+      resources :cities
+      resources :neighborhoods
+      resources :addresses
+
+
       resources :courses
       resources :course_groups
       resources :enrollments
-      resources :neighborhoods
       resources :questions
       resources :schools
-      resources :states
       resources :subjects
     end
   end
