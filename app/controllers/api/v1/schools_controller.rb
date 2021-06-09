@@ -1,6 +1,6 @@
 class Api::V1::SchoolsController < ApplicationController
   before_action :set_school, only: [:show, :update, :destroy]
-  # before_action :authenticate_api_v1_admin!
+  before_action :authenticate_api_v1_admin!
 
   # GET /schools
   def index
@@ -46,6 +46,6 @@ class Api::V1::SchoolsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def school_params
-      params.require(:school).permit(:name, :address_id, :subdomain)
+      params.require(:school).permit(:name, :address_id)
     end
 end

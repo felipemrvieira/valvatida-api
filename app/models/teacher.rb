@@ -7,7 +7,7 @@ class Teacher < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   include DeviseTokenAuth::Concerns::User
 
-  # belongs_to :school
+  belongs_to :school
   has_many :questions
   validates :name, presence: true
 end
