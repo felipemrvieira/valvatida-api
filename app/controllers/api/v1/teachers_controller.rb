@@ -9,7 +9,7 @@ class Api::V1::TeachersController < ApplicationController
 
   # GET /teachers/1
   def show
-    render json: @teacher, include: :neighborhoods
+    render json: @teacher, include: :school
   end
 
   # POST /teachers
@@ -45,7 +45,7 @@ class Api::V1::TeachersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def teacher_params
-      params.permit(:name, :nickname, :school_id, :email, :password, :cpf, :phone, 
+      params.require(:teacher).permit(:name, :nickname, :school_id, :email, :password, :cpf, :phone, 
         :status, :password_confirmation, :avatar)
     end
 end
