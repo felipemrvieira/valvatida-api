@@ -30,10 +30,11 @@ Rails.application.routes.draw do
         # token_validations:  'devise_token_auth/token_validations'
       }
       
+      resources :teachers
+      resources :students
       resources :addresses
       resources :cities
       resources :countries
-      resources :teachers
       resources :courses
       resources :course_groups
       resources :enrollments
