@@ -10,7 +10,7 @@ class Api::V1::CoursesController < ApplicationController
 
   # GET /courses/1
   def show
-    render json: @course, include: :school
+    render json: @course, include: [:school, :course_group]
   end
 
   # POST /courses
@@ -46,6 +46,6 @@ class Api::V1::CoursesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def course_params
-      params.require(:course).permit(:title, :school_id)
+      params.require(:course).permit(:title, :school_id, :course_group_id)
     end
 end
