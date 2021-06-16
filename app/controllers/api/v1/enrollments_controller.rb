@@ -5,12 +5,12 @@ class Api::V1::EnrollmentsController < ApplicationController
   def index
     @enrollments = Enrollment.all
 
-    render json: @enrollments
+    render json: @enrollments, include: [:student, :course]
   end
 
   # GET /enrollments/1
   def show
-    render json: @enrollment
+    render json: @enrollment, include: [:student, :course]
   end
 
   # POST /enrollments
