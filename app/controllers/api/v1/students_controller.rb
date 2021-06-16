@@ -1,4 +1,4 @@
-class Api::V1::SudentsController < ApplicationController
+class Api::V1::StudentsController < ApplicationController
   before_action :set_student, only: [:show, :update, :destroy]
 
   # GET /students
@@ -9,7 +9,7 @@ class Api::V1::SudentsController < ApplicationController
 
   # GET /students/1
   def show
-    render json: @student, include: :school
+    render json: @student, include: :address
   end
 
   # POST /students
@@ -45,7 +45,7 @@ class Api::V1::SudentsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def student_params
-      params.require(:student).permit(:name, :nickname, :school_id, :email, :password, :cpf, :phone, 
+      params.require(:student).permit(:name, :nickname, :address_id, :email, :password, :cpf, :phone, 
         :status, :password_confirmation, :avatar)
     end
 end
