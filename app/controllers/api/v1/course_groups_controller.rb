@@ -10,7 +10,7 @@ class Api::V1::CourseGroupsController < ApplicationController
 
   # GET /course_groups/1
   def show
-    render json: @course_group
+    render json: @course_group, include: :courses
   end
 
   # POST /course_groups
