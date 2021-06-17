@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  resources :attempts
   namespace :api do
     namespace :v1 do
       
@@ -20,7 +21,7 @@ Rails.application.routes.draw do
         sessions:             'api/v1/teachers/sessions',
         # token_validations:  'devise_token_auth/token_validations'
       }
-
+      
       mount_devise_token_auth_for 'Admin', at: 'admin_auth', controllers: {
         # confirmations:      'devise_token_auth/confirmations',
         # passwords:          'devise_token_auth/passwords',
@@ -40,6 +41,8 @@ Rails.application.routes.draw do
       resources :enrollments
       resources :neighborhoods
       resources :questions
+      resources :open_question_answers
+      resources :multiple_question_options
       resources :schools
       resources :states
       resources :subjects

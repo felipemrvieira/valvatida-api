@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_17_115957) do
+ActiveRecord::Schema.define(version: 2021_06_17_140236) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,16 @@ ActiveRecord::Schema.define(version: 2021_06_17_115957) do
     t.index ["uid", "provider"], name: "index_admins_on_uid_and_provider", unique: true
   end
 
+  create_table "attempts", force: :cascade do |t|
+    t.bigint "question_id"
+    t.bigint "student_id"
+    t.boolean "hit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_attempts_on_question_id"
+    t.index ["student_id"], name: "index_attempts_on_student_id"
+  end
+
   create_table "cities", force: :cascade do |t|
     t.string "name"
     t.bigint "state_id"
@@ -91,12 +101,27 @@ ActiveRecord::Schema.define(version: 2021_06_17_115957) do
     t.index ["student_id"], name: "index_enrollments_on_student_id"
   end
 
+  create_table "multiple_question_options", force: :cascade do |t|
+    t.string "label"
+    t.boolean "correct"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "neighborhoods", force: :cascade do |t|
     t.string "name"
     t.bigint "city_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["city_id"], name: "index_neighborhoods_on_city_id"
+  end
+
+  create_table "open_question_answers", force: :cascade do |t|
+    t.string "answer"
+    t.bigint "question_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_open_question_answers_on_question_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -199,12 +224,15 @@ ActiveRecord::Schema.define(version: 2021_06_17_115957) do
   end
 
   add_foreign_key "addresses", "neighborhoods"
+  add_foreign_key "attempts", "questions"
+  add_foreign_key "attempts", "students"
   add_foreign_key "cities", "states"
   add_foreign_key "courses", "course_groups"
   add_foreign_key "courses", "schools"
   add_foreign_key "enrollments", "courses"
   add_foreign_key "enrollments", "students"
   add_foreign_key "neighborhoods", "cities"
+  add_foreign_key "open_question_answers", "questions"
   add_foreign_key "questions", "subjects"
   add_foreign_key "questions", "teachers"
   add_foreign_key "school_admins", "admins"
