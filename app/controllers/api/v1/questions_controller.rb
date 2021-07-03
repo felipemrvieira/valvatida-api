@@ -10,7 +10,8 @@ class Api::V1::QuestionsController < ApplicationController
 
   # GET /questions/1
   def show
-    render json: @question, include: [:teacher, :subject]
+    render json: @question, include: [:teacher, :subject, :multiple_question_options,
+      :open_question_answers]
   end
 
   # POST /questions
@@ -46,6 +47,8 @@ class Api::V1::QuestionsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def question_params
-      params.require(:question).permit(:label, :command, :subject_id, :teacher_id, :kind)
-    end
+      params.require(:question).permit(:label, :command, :subject_id, :teacher_id, 
+        :kind, multiple_question_options_attributes: [:id, :label, :correct, :_destroy], 
+        open_question_answers_attributes: [:id, :answer, :_destroy])
+    end 
 end

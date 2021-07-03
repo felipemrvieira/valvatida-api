@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_17_140236) do
+ActiveRecord::Schema.define(version: 2021_06_17_153641) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,6 +106,8 @@ ActiveRecord::Schema.define(version: 2021_06_17_140236) do
     t.boolean "correct"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "question_id"
+    t.index ["question_id"], name: "index_multiple_question_options_on_question_id"
   end
 
   create_table "neighborhoods", force: :cascade do |t|
@@ -231,6 +233,7 @@ ActiveRecord::Schema.define(version: 2021_06_17_140236) do
   add_foreign_key "courses", "schools"
   add_foreign_key "enrollments", "courses"
   add_foreign_key "enrollments", "students"
+  add_foreign_key "multiple_question_options", "questions"
   add_foreign_key "neighborhoods", "cities"
   add_foreign_key "open_question_answers", "questions"
   add_foreign_key "questions", "subjects"
